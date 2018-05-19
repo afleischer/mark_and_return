@@ -7,7 +7,6 @@ const fs = require('fs')
 //const app = electron.app;
 // Module to create native browser window.
 //const BrowserWindow = electron.BrowserWindow
-var Mousetrap = require('mousetrap')
 
 const path = require('path')
 const url = require('url')
@@ -101,29 +100,32 @@ app.on('ready',function(){
  * then listen for GLOBAL keypress
  */
 
- var store = new Store({
-   configName: 'user-preferences',
-   defaults:  { 
-   }
- });
- var hotkeys = [];
- try{ 
-   var rawData = fs.readFileSync(store.path, 'utf8');
- }
- catch(error){
-   console.log(error);
- }
+ //class to handle flat file maintenance
+    var store = new Store({
+      configName: 'user-preferences',
+      defaults:  { 
+      }
+    });
+    var hotkeys = [];
 
+  //Read in flat file
+    try{ 
+      var rawData = fs.readFileSync(store.path, 'utf8');
+    }
+        catch(error){
+          console.log(error);
+        }
+
+  //Translate flat file data to JSON
   try{
     var prunedData = JSON.parse(rawData);
   }
-  catch(error){
-    if (JSON.parse(rawData) == "undefined"){
-      console.log("")
-    }
-  }
+    catch(error){
+       console.log(error)
+     }
  var eachWindow = [];
 
+ //If the 
  for(var key in prunedData){
    if(prunedData.assocWindow != 'null'){
     
@@ -131,9 +133,12 @@ app.on('ready',function(){
  }
 
   for (var key in prunedData){
-    console.log(`prunedData.${key} = ${prunedData[key]}`);
-    console.log(prunedData.keys);    //MandR being a placeholder for the 
-    globalShortcut.register(prunedData.keys, MandR.returnWindows(prunedData));
+    if(prunedData.assocWindow != 'undefined'){
+      console.log(`prunedData.${key} = ${prunedData[key]}`);
+      console.log(prunedData.keys);    //MandR being a placeholder for the 
+      globalShortcut.register(prunedData.keys, MandR.activator(prunedData));
+  
+    }
   }
 
 
