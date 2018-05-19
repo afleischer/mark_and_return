@@ -1,0 +1,35 @@
+{
+  "name": "mark_and_return",
+  "version": "1.0.0",
+  "description": "A handy utility for managing windows by task",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "ffi": "^2.2.0",
+    "mousetrap": "^1.6.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "check-dependencies": "^1.1.0",
+    "devtron": "^1.4.0",
+    "electron": "^2.0.0",
+    "mocha": "^5.1.1"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "\u0016"
+  },
+  "keywords": [
+    "productivity",
+    "tasks",
+    "windows"
+  ],
+  "author": "afleischer and the GitHub community",
+  "license": "GPL-3.0"
+}

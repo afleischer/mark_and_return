@@ -1,0 +1,156 @@
+[33mcommit 4ece7d2e70cf8c59d443cd18794508cc997115f2[m[33m ([m[1;36mHEAD -> [m[1;32mfix_install[m[33m)[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Tue May 15 22:45:56 2018 -0700
+
+    Major updates to modularize code.
+
+[33mcommit 87b24f27a15cf84335607ae75a6be342ccf51cdc[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Mon May 14 00:07:39 2018 -0700
+
+    Added files for ffi integration
+
+[33mcommit 255b00ff5585669d97f43e7cd8a05fc9b2a2d47d[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Wed May 9 22:52:09 2018 -0700
+
+    Added code to add multiple input fields and created logic to set key value for hotkey depending on field bound to
+
+[33mcommit 0c06d059b932429aa9e68f7769f1ab0dfa0b83b1[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Tue May 8 22:44:11 2018 -0700
+
+    Added multi hotkey support
+
+[33mcommit 1ed104192833c19f9ecdc6f2a6c728ced5440994[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Tue May 8 22:10:06 2018 -0700
+
+    Added newBind and removeBind for button logic to add or remove fields
+
+[33mcommit e625e50b3dc7b88031082e912f72753b3a288488[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Tue May 8 02:46:08 2018 -0700
+
+      Now: pre adding new input fields.  Flat file is now successfully written to! :D
+
+[33mcommit 9bf6964d938b7a4d6528b482e44852e827ce6254[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Tue May 8 01:48:45 2018 -0700
+
+    Updated changes to keycapture to try to eliminate differences.  Log in main claiming to write to file but isn't yet...
+
+[33mcommit dea2f76c4c31c46b857c49cf90a59679be4910df[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Tue May 8 01:02:23 2018 -0700
+
+    Updated keycapture code to create an array for mousetrap to read, updated main with global hotkey
+    code.  Concatenated string now passed to main successfully.
+
+[33mcommit 1b5e1fca775d5986a9ca8e338c17d5f62e78a5da[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Mon May 7 23:52:53 2018 -0700
+
+    Probably a terrible mistake but I'm adding fs to keycapture to see if I can do the binding and sending to flatfile within renderer
+
+[33mcommit 733e955bd0892c44eaed7abe75319d062a222340[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Mon May 7 23:30:35 2018 -0700
+
+    Added mousetrap code to keycapture to work around issues in main.js
+
+[33mcommit af0b792e63d50801a7db9eb8f9ea4fd6050c0a35[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Mon May 7 05:57:47 2018 -0700
+
+    Adding main.js and keycapture prior to changing the mousetrap ordering
+
+[33mcommit 10f72af952adacea4c2380566a63fd3f1cc2c452[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Mon May 7 05:39:48 2018 -0700
+
+    Updated keycapture to prevent redundant messaging
+
+[33mcommit 259cdabdc4fc4bbce9c5131ab60d60bf67181ac9[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Sun May 6 18:07:03 2018 -0700
+
+    Updated html to remove irrelevant input fields, created placeholder text.  IPC now seems to work, yay! :)
+
+[33mcommit e8de72f0b92d6cba6e14329345caed1dc75d61f7[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Sun May 6 17:28:33 2018 -0700
+
+    Added launch.json to enhance debugging, fixing the undefined app .on issues.
+    Revert "Troubleshooting IPC connection"
+    
+    This reverts commit 0f2b749e728041aa582954a93004ab46e17fa5f5.
+
+[33mcommit bed61cb80ab8984f9be3c5c80da4e67fbd1d9dba[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Thu May 3 01:25:23 2018 -0700
+
+    Backing up everything prior to reverting to yesterday to fix install
+
+[33mcommit 55a525edbeb4eebf96443ab1f54148337447f2cd[m[33m ([m[1;32mmaster[m[33m)[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Wed May 2 05:52:11 2018 -0700
+
+    Added Mousetrap binding code to main.js in IPC callback
+
+[33mcommit 0f2b749e728041aa582954a93004ab46e17fa5f5[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Tue May 1 00:36:15 2018 -0700
+
+    Troubleshooting IPC connection
+
+[33mcommit 2356b80baff6c45f4150744f8be945482fcff83d[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Sun Apr 29 15:34:04 2018 -0700
+
+    Linked to keycapture within index
+
+[33mcommit 4c45c1803341a159a754a7f9b9806bae0bb30792[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Sun Apr 29 15:33:13 2018 -0700
+
+    Separated keycapture into render process, added IPC reception to main
+    process
+
+[33mcommit 4d7aafdea73149f831d96362c6598a01ceae5810[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Sat Apr 28 17:56:42 2018 -0700
+
+    Added cloudburst code for storing Electron user data.  Will retool to
+    accept hotkeys.
+
+[33mcommit 660fd7a42a7d7db713203a2c126513d7f7ded290[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Sat Apr 28 11:52:31 2018 -0700
+
+    Updated key package code, linked in Mousetrap library for help with
+    keybainding
+
+[33mcommit 649e7608cde5e787f10a7f369cfe2d7136ec6582[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Sat Apr 28 10:59:50 2018 -0700
+
+    Separated primary methods into different modules for readability
+
+[33mcommit 2d95cff98910706ebcfff7412f86709846f6b1d6[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Fri Apr 27 01:25:50 2018 -0700
+
+    Added code to send app browser window data as a test
+
+[33mcommit 3a2c939bb3eecd276a2870d698a003cbb1c63720[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Thu Apr 26 00:22:24 2018 -0700
+
+    Added keystroke input functionality to main.js
+
+[33mcommit a3a3a97c6239edc87129bc1ae76e398a87e15fd4[m
+Author: afleischer <afleischer1337@gmail.com>
+Date:   Wed Apr 25 19:38:34 2018 -0700
+
+    Created main file and package to try creating an electron app from scratch.

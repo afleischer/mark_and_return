@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mark and Return Utility</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Mark and Return Config v.0.1.0</title>
+  </head>
+  <body>
+    <h1>Mark and Return Config</h1>
+
+      <form class = "entry" id = "buttonContainer"> 
+          <input id = "hotkey_1" class="Mousetrap bindInput" type = "text" name = "hotkey_1" placeholder ="Input hotkey 1 here"><br>
+          <div id = "additions"></div>
+          <!--input type = "text" name = "hotkey_2" value ="Input hotkey 2 here"--><br>
+          <!--input type = "text" name = "hotkey_3" value ="Input hotkey 3 here"--><br>
+          <!--input type = "text" name = "hotkey_4" value ="Input hotkey 4 here"--><br>
+      </form>
+
+      <form class = "marker">
+        <input id = "markerHotkey" name = "Hotkey to Mark windows" placeholder = "Enter global variable to enable marking">
+      </form>
+
+      <button id = "newBind">Add new keybind</button>
+      <button id = "removeBind">Remove keybind</button>
+
+      <button id = "markerButton">MARK WINDOWS</button>
+
+      <button>Update</button>
+    
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+    We are using Node.js <script>document.write(process.versions.node)</script>,
+    Chromium <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>.
+
+    <script>
+      // You can also require other files to run in this process
+      require('./keycapture.js')
+      require('./renderer.js')
+      require('./index.js')
+    </script>
+  </body>
+</html>
