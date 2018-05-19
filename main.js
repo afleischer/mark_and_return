@@ -1,6 +1,8 @@
 
 const electron = require('electron')
-const {app, BrowserWindow, globalShortcut} = require('electron')
+const app = electron.app
+const BrowserWindow = electron.BrowserWindow
+const globalShortcut = electron.globalShortcut
 const os = require('os')
 const fs = require('fs')
 // Module to control application life.
@@ -137,7 +139,6 @@ app.on('ready',function(){
       console.log(`prunedData.${key} = ${prunedData[key]}`);
       console.log(prunedData.keys);    //MandR being a placeholder for the 
       globalShortcut.register(prunedData.keys, MandR.activator(prunedData));
-  
     }
   }
 
