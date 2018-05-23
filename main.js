@@ -10,6 +10,8 @@ const fs = require('fs')
 // Module to create native browser window.
 //const BrowserWindow = electron.BrowserWindow
 
+var rebuild = require('electron-rebuild')
+
 const path = require('path')
 const url = require('url')
 const ipc = electron.ipcMain
