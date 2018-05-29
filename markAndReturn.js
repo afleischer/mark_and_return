@@ -9,12 +9,12 @@ var MandR = {};
  * 
  * REMEMBER: assocWindow should be a HWND object
  */
- MandR.activator = function markAndReturn(hkey, assocWindow){
+ MandR.activator = function markAndReturn(prunedData){
     //add our window to the 
     var FFI = require('ffi');
 
 
-    var prunedData = args;  //Object of JSON Hotkey data
+    var prunedData = prunedData;  //Object of JSON Hotkey data
     var hotkey = prunedData.keys; //value at keys
 
     //Issue: there will likely be multiples of this object.  How will this work? 
@@ -23,18 +23,32 @@ var MandR = {};
 
     //This array will hold 
 
+    //Do frontslash and backslash version
+
+    function TEXT(text){
+  return new Buffer(text, 'ucs2').toString('binary');
+}
+
+
+    var user32path = 'C:\\Windows\\System32\\user32.dll';
+
+    //var user32path = "/c/Windows/System32/user32.dll";
+
          function TEXT(text){
            return new Buffer(text, 'ucs2').toString('binary');
         }
 
-          var user32 = new FFI.Library('user32', {
+        //was previously 'user32'
+        //next: try FindWindow
+          var user32 = new FFI.Library(user32path, {
          'FindWindowW': ['int', ['string', 'string']],
-        'ShowWindow': ['int', ['int', 'int']],
-        'enumWindows': ['int', ['int', 'int']]
+        'ShowWindow': ['int', ['int', 'int']]
+        //'enumWindows': ['int', ['int', 'int']]   The issue is here!!!!!
          });
 
-         var handle = user32.FindWindowW
-
+         var handle = user32.FindWindowW(null, TEXT('Untitled - Notepad'));
+         //see what value handle is equal to
+         //handle value is equal to 0
 /**
  * if HWND object matches the passed-in HWND
  * then show
@@ -45,6 +59,7 @@ var MandR = {};
  * 
  * Get the TEXT('Untitled - Notepad') of a window
  */
+user32.ShowWindow(handle, 3);
 
       var openWindows = user32.enumWindows(windowFinder(handles));
          console.log("OpenWindows registered as:" + openWindows);
