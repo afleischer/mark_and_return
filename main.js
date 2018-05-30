@@ -16,7 +16,7 @@ const path = require('path')
 const url = require('url')
 const ipc = electron.ipcMain
 const Store = require('./preferencesManager.js')
-const getSet = require('./getSet.js')
+const getsetWindow = require('./getSet.js')
 const MandR = require('./markAndReturn.js')
 
 /**
@@ -136,13 +136,38 @@ app.on('ready',function(){
    }
  }
 
-  for (var key in prunedData){
+
+ /**
+  * I need some flag to know if the marker is activated
+  * 
+  * markerModeFlag = 0  -> marker mode is not activated, pressing hotkey will 
+  * hide and show windows
+  * 
+  * markerModeFlag = 1 -> marker mode activated, pressing hotkey will assign
+  * active window to object
+  * 
+  * on application load, starts at 0
+  */
+let markerModeFlag = 0;
+
+
+if (markerModeFlag == 0){
+  for (var key in prunedData){ 
     if(prunedData.assocWindow != 'undefined'){
       console.log(`prunedData.${key} = ${prunedData[key]}`);
       console.log(prunedData.keys);    //MandR being a placeholder for the 
-      globalShortcut.register(prunedData.keys, MandR.activator(prunedData));
+
+      //"activator" hides and shows windows accordingly
+      if (prunedData.id != 'marker'){
+        globalShortcut.register(prunedData.keys, MandR.activator(prunedData, prunedData.keys));
+        }
+        else if (prunedData.id == 'marker'){
+        globalShortcut.register(prunedData.keys, MandR.setWindow(prunedData));
+        }
     }
   }
+}
+
 
 
  
@@ -150,13 +175,47 @@ app.on('ready',function(){
 * Handle marker entry
 */  
   ipc.on('markerAction', function(event, args){ //When user adds marker key
+   
+   //update hotkey in storage file
     getSet.setterFunction(event, args); //Adds key to user-preferences file, removes dupes
+
+    //need to receive updated hotkey string
+
+    //re-check 
+      for (let key in prunedData){
+      if(prunedData.assocWindow != 'undefined'){
+        console.log(`prunedData.${key} = ${prunedData[key]}`);
+        console.log(prunedData.keys);    //MandR being a placeholder for the 
+        if (prunedData.id != 'marker'){
+          globalShortcut.register(prunedData.keys, MandR.activator(prunedData));
+          }
+          else if (prunedData.id == 'marker'){
+          globalShortcut.register(prunedData.keys, MandR.setWindow(prunedData));
+  
+          }
+      }
+    }
+
   });
 
   ipc.on('invokeAction', function(event, args){ //When user adds Returner hotkey to field in render
     console.log("RECEIVED IPC IN MAIN!");
     getSet.setterFunction(event, args); //Adds key to user-preferences file, removes dupes
   });
+
+  ipc.on('markerStart', function(event, args){
+    //prunedData.keys where it equals "marker" 
+    /*
+    
+    if prunedData.hasOwnProperty('marker'){
+      //set variable to equal 
+        //might be able to inherit this from where I call this from renderer
+      var markerKey = prunedData.keys;
+    }
+    
+    
+    */ 
+  }
 
 });
 

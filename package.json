@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A handy utility for managing windows by task",
   "main": "main.js",
+  "scripts": {
+  "rebuild": "electron-rebuild -f -w yourmodule"
+},
   "directories": {
     "test": "test"
   },
@@ -15,7 +18,7 @@
     "chai": "^4.1.2",
     "check-dependencies": "^1.1.0",
     "devtron": "^1.4.0",
-    "electron": "^2.0.0",
+    "electron": "^2.0.2",
     "electron-rebuild": "^1.7.3",
     "mocha": "^5.1.1"
   },
@@ -34,4 +37,5 @@
   ],
   "author": "afleischer and the GitHub community",
   "license": "GPL-3.0"
+
 }

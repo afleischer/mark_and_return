@@ -11,7 +11,8 @@ var getSet = {};
  * This file adds updated keystrokes to flat file,
  * Then removes any duplicates in the file.
  * 
- * This file does NOT tie window logic in.  That will be done in marker.js
+ * This file does NOT tie window logic in. 
+ * That will be done in markAndReturn.js's setWindow function
  */
 
 getSet.setterFunction = function(event, args){
@@ -23,25 +24,33 @@ getSet.setterFunction = function(event, args){
    * Load existing data
    */
    
-  const Store = require('./preferencesManager.js')
+   //shouldn't be necessary if in main
+  //const Store = require('./preferencesManager.js') 
 
-  const store = new Store({ //create a new getting and setting logic
+  const store = new Store;
+  
+  /* --OLD--
+  ({ //create a new getting and setting logic
     //We'll call our data file 'user-preferences'
     configName: 'user-preferences'
-    //configName and defaults are sent as an "opts" object to the clss constructor for "Store".  
-//Once we'v e derived our newly-created object called "store", we will modify the constructor opts to write to the file below...
+
+    //Once we'v e derived our newly-created object called "store", we will modify the constructor opts to write to the file below...
   });
+     --OLD-- */ 
 
 
+  /**
+   * load existing data from flat 'user preferences.json' file
+   */
   var rawDataInitial = fs.readFileSync(store.path);
-  try{
-    var cleanedDataInitial = JSON.parse(rawDataInitial);
-  }
-  catch(e){
-    fs.writeFileSync(store.path, "");
-  }
+    try{
+      var cleanedDataInitial = JSON.parse(rawDataInitial);
+    }
+   catch(e){
+      fs.writeFileSync(store.path, "");
+    }
 
-  StoreArray.push(cleanedDataInitial); //This will load the pre-existing data. 
+   StoreArray.push(cleanedDataInitial); 
 
 
   console.log("Setter firing!");

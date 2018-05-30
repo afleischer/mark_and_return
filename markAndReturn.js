@@ -12,6 +12,10 @@ var MandR = {};
  MandR.activator = function markAndReturn(prunedData){
     //add our window to the 
     var FFI = require('ffi');
+   // var getWindow = require('direct_window');
+
+    //let WindowsShow = require('window_retrieval_test');
+    //var testWindow = WindowsShow('Calculator');
 
 
     var prunedData = prunedData;  //Object of JSON Hotkey data
@@ -42,13 +46,26 @@ var MandR = {};
         //next: try FindWindow
           var user32 = new FFI.Library(user32path, {
          'FindWindowW': ['int', ['string', 'string']],
-        'ShowWindow': ['int', ['int', 'int']]
+        'ShowWindow': ['int', ['int', 'int']],
+        'ShowWindowAsync': ['int', ['int', 'int']],
+        //'GetClassNameW': ['int'['int', 'string','int']]
+        'FindWindowExW': ['int', ['int', 'int', 'string', 'string']] 
+/*
+
+*/
+
+
         //'enumWindows': ['int', ['int', 'int']]   The issue is here!!!!!
          });
 
-         var handle = user32.FindWindowW(null, TEXT('Untitled - Notepad'));
+         //var handle = user32.FindWindowW(null, TEXT('Calculator'));
+        // var handle = user32.FindWindowExW(0, 0, null, TEXT('Calculator'));
+
+         var handle = user32.FindWindowW(null,TEXT("Calculator ‎- Calculator"));
+
+         //var handle = user32.FindWindowEx(FindWindowEx(0, 0, "Untitled - Notepad", 0));
          //see what value handle is equal to
-         //handle value is equal to 0
+         //handle value is equal to 0 sometimes, but not other times 
 /**
  * if HWND object matches the passed-in HWND
  * then show
@@ -59,10 +76,19 @@ var MandR = {};
  * 
  * Get the TEXT('Untitled - Notepad') of a window
  */
-user32.ShowWindow(handle, 3);
+user32.ShowWindowAsync(handle, 'SW_Hide');
 
-      var openWindows = user32.enumWindows(windowFinder(handles));
-         console.log("OpenWindows registered as:" + openWindows);
+//var className = user32.GetClassName(handle);
+
+      //var openWindows = user32.enumWindows(windowFinder(handles));
+        // console.log("OpenWindows registered as:" + openWindows);
+
+
+
+
+    /****
+     * The following is under construction
+     */
 
       function windowFinder(handles){
         {  //if the hotkey equals the one pressed HOW DO I GET THAT???
@@ -81,35 +107,21 @@ user32.ShowWindow(handle, 3);
 
 }
 
-
-         //Need to get number of windows 
-            //?? enumWindows function?? 
-            // var openWindows = user32.enumWindows
+/* End Activator */
 
 
 
-            /**
-             * When global hotkey is pressed
-             *  use enumWindows to loop through each open window
-             *  if this window has been "assigned" the tag associated with the hotkey 
-             *  keep it open 
-             *  if not, close it!
-             */
 
-        //for (var i; i < enumWindows.length; i++){      Wait, what's the .length for this? 
-
-
-        //}
-        
 /**
- * The following function will be fired once
- * the user "marks" a window with a hotkey. 
- * The data it receives will be the current window
- * 
- *  
- * event will be the window data, args will be the hotkey
+ * Fetches a handle to the current active window, 
+ * Binds the stored window to the associated hotkey 
  */
-MandR.setWindow = function setWindow(event, args){
+
+//TODO: Verify hotkey is passed in from main
+//!! should receive as 'args' the Keybind object
+  //Notice- I need to populate prunedData with the hotkey 
+
+MandR.setWindow = function setWindow(prunedData, args){
   var ref = require("ref");
   var FFI = require('ffi');
 
@@ -120,10 +132,11 @@ MandR.setWindow = function setWindow(event, args){
     return new Buffer(text, 'ucs2').toString('binary');
  }
 
+
    var user32 = new FFI.Library('user32', {
   'FindWindowW': ['int', ['string', 'string']],
  'ShowWindow': ['int', ['int', 'int']],
- 'GetActiveWindow': ['int', ['int', 'int']]
+ 'GetActiveWindow': ['int', ['null']]
   });
 
 //ffi.Library(libraryFile, { functionSymbol: [ returnType, [ arg1Type, arg2Type, ... ], ... ]);
@@ -132,13 +145,11 @@ MandR.setWindow = function setWindow(event, args){
  * TODO: I Need to get the Text of a "set" window
  */
 
+ //add listener to recognize keypress- actually already done with main's global shortcut.register
+
   var activeWindow = user32.GetActiveWindow();
-    console.log(activeWindow);
 
 
-  
-
-      //let's make sure this works first...
 
 //var handle = user32.FindWindowW(null, TEXT('Untitled - Notepad')); //this code is what selects the window; right now it searches by the name of the window
 
@@ -146,22 +157,29 @@ MandR.setWindow = function setWindow(event, args){
 
 var window = event;  //Will we set this here???  Might as well...
 
-console.log(handle);
-user32.ShowWindow(handle, 0);
 
   var keyCombo = args;
 
   var rawData = fs.readFileSync(store.path);
-  var prunedData = JSON.parse(rawData);
+  var prunedDataHere = JSON.parse(rawData);
+  //can also try var prunedData = prunedData;
 
-  for (iter in prunedData){
+  for (iter in prunedDataHere){
     if (prunedData.keys == keyCombo){
       prunedData.assocWindow.push = activeWindow;  //this might error out... we'll see. 
     }
   }
+  /**
+   * if the above loop isn't working as expected, can try:
+   * 
+   * for (let [id, keys, assocWindow] of prunedData){
+   *    if ()
+   * }
+   */
 
   var writer = JSON.stringify(prunedData);
   fs.writeFileSync(store.path, writer, 'utf8');
+
 }
 
 /**
@@ -192,6 +210,7 @@ MandR.activateMarkMode = function(args){
     return new Buffer(text, 'ucs2').toString('binary');
  }
 
+ /*
    var user32 = new FFI.Library('user32', {
   'FindWindowW': ['int', ['string', 'string']],
  'ShowWindow': ['int', ['int', 'int']],
