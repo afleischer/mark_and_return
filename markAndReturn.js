@@ -9,7 +9,7 @@ var MandR = {};
  * 
  * REMEMBER: assocWindow should be a HWND object
  */
- MandR.activator = function markAndReturn(prunedData){
+ MandR.activator = function markAndReturn(objectIn, hotkeyValue){
     //add our window to the 
     var FFI = require('ffi');
    // var getWindow = require('direct_window');
@@ -18,8 +18,8 @@ var MandR = {};
     //var testWindow = WindowsShow('Calculator');
 
 
-    var prunedData = prunedData;  //Object of JSON Hotkey data
-    var hotkey = prunedData.keys; //value at keys
+    var prunedData = objectIn;  //Object of JSON Hotkey data
+    var hotkey = hotkeyValue; //value at key that is pressed
 
     //Issue: there will likely be multiples of this object.  How will this work? 
 
@@ -49,11 +49,8 @@ var MandR = {};
         'ShowWindow': ['int', ['int', 'int']],
         'ShowWindowAsync': ['int', ['int', 'int']],
         //'GetClassNameW': ['int'['int', 'string','int']]
-        'FindWindowExW': ['int', ['int', 'int', 'string', 'string']] 
-/*
-
-*/
-
+        'FindWindowExW': ['int', ['int', 'int', 'string', 'string']],
+        'BringWindowToTop': ['int', ['int']]
 
         //'enumWindows': ['int', ['int', 'int']]   The issue is here!!!!!
          });
@@ -77,6 +74,19 @@ var MandR = {};
  * Get the TEXT('Untitled - Notepad') of a window
  */
 user32.ShowWindowAsync(handle, 'SW_Hide');
+
+
+
+for ([id, keys, assocWindow] of prunedData){
+  if (keys == hotkey){
+    for(let i = 0; i <= assocWindow.length; i++){
+      user32.ShowWindowAsync(assocWindow[i], 'SW_RESTORE');
+      user32.BringWindowToTop(assocWindow[i]);
+    }
+  }
+}
+
+
 
 //var className = user32.GetClassName(handle);
 
@@ -165,8 +175,8 @@ var window = event;  //Will we set this here???  Might as well...
   //can also try var prunedData = prunedData;
 
   for (iter in prunedDataHere){
-    if (prunedData.keys == keyCombo){
-      prunedData.assocWindow.push = activeWindow;  //this might error out... we'll see. 
+    if (prunedDataHere.keys == keyCombo){
+      prunedDataHere.assocWindow.push = activeWindow;  //this might error out... we'll see. 
     }
   }
   /**
@@ -177,8 +187,10 @@ var window = event;  //Will we set this here???  Might as well...
    * }
    */
 
-  var writer = JSON.stringify(prunedData);
+  var writer = JSON.stringify(prunedDataHere);
   fs.writeFileSync(store.path, writer, 'utf8');
+
+  //other programs can reference this file to get the info
 
 }
 
