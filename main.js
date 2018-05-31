@@ -131,7 +131,7 @@ app.on('ready',function(){
 
  //If the 
  for(var key in prunedData){
-   if(prunedData.assocWindow != 'null'){
+   if(prunedData.assocWindows != 'null'){
     
    }
  }
@@ -151,22 +151,37 @@ app.on('ready',function(){
 let markerModeFlag = 0;
 
 
-if (markerModeFlag == 0){
-  for (var key in prunedData){ 
-    if(prunedData.assocWindow != 'undefined'){
-      console.log(`prunedData.${key} = ${prunedData[key]}`);
-      console.log(prunedData.keys);    //MandR being a placeholder for the 
+  if (markerModeFlag == 0){
+    for (var key in prunedData){ 
+      if(prunedData.assocWindows != 'undefined'){  //CHANGE: undefined to null if keep logic
+        console.log(`prunedData.${key} = ${prunedData[key]}`);
+        console.log(prunedData.keys);    //MandR being a placeholder for the 
 
-      //"activator" hides and shows windows accordingly
-      if (prunedData.id != 'marker'){
-        globalShortcut.register(prunedData.keys, MandR.activator(prunedData, prunedData.keys));
-        }
-        else if (prunedData.id == 'marker'){
-        globalShortcut.register(prunedData.keys, MandR.setWindow(prunedData));
-        }
+        //"activator" hides and shows windows accordingly
+        if (prunedData.id != 'marker'){
+          globalShortcut.register(prunedData.keys, MandR.activator(prunedData, prunedData.keys));
+          }
+          else if (prunedData.id == 'marker'){
+
+            globalShortcut.register(prunedData.keys, function() {
+              if (markerModeFlag == 0){
+                markerModeFlag = 1;
+               else if (markerModeFlag == 1){
+                  markerModeFlag = 0;
+                }
+              }
+            });
+            }
+      }
     }
   }
-}
+  else if(markerModeFlag == 1){
+    //we're in marker mode now, so now, we bind to setWindow
+    for (var key in prunedData){ 
+      globalShortcut.register(prunedData.keys, MandR.setWindow(prunedData));
+
+    }
+  }
 
 
 
@@ -183,7 +198,7 @@ if (markerModeFlag == 0){
 
     //re-check 
       for (let key in prunedData){
-      if(prunedData.assocWindow != 'undefined'){
+      if(prunedData.assocWindows != 'undefined'){
         console.log(`prunedData.${key} = ${prunedData[key]}`);
         console.log(prunedData.keys);    //MandR being a placeholder for the 
         if (prunedData.id != 'marker'){
@@ -215,7 +230,7 @@ if (markerModeFlag == 0){
     
     
     */ 
-  }
+  });
 
 });
 
