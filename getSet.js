@@ -58,7 +58,7 @@ getSet.setterFunction = function(event, args){
   /**
    * Add new input
    */
-    var keybind = args;
+    var keybind = args;  //args being the new 
     var keybindFormatted = JSON.stringify(keybind);
       StoreArray.push(keybindFormatted); //I'm not doing anything with the storearray... I need to compare the two objects
 

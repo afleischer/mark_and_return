@@ -150,7 +150,7 @@ app.on('ready',function(){
   */
 let markerModeFlag = 0;
 
-
+//probably need to call a function here to instigate all this code
   if (markerModeFlag == 0){
     for (var key in prunedData){ 
       if(prunedData.assocWindows != 'undefined'){  //CHANGE: undefined to null if keep logic
@@ -164,24 +164,36 @@ let markerModeFlag = 0;
           else if (prunedData.id == 'marker'){
 
             globalShortcut.register(prunedData.keys, function() {
-              if (markerModeFlag == 0){
-                markerModeFlag = 1;
-               else if (markerModeFlag == 1){
-                  markerModeFlag = 0;
+                if (markerModeFlag == 0){
+                  markerModeFlag = 1;
                 }
-              }
+                else if (markerModeFlag == 1){
+                    markerModeFlag = 0;
+                  }
             });
-            }
+          }
+        }
       }
     }
-  }
-  else if(markerModeFlag == 1){
-    //we're in marker mode now, so now, we bind to setWindow
-    for (var key in prunedData){ 
-      globalShortcut.register(prunedData.keys, MandR.setWindow(prunedData));
-
+    else if(markerModeFlag == 1){
+      //we're in marker mode now, so now, we bind to setWindow
+      for (var key in prunedData){ 
+        if(prunedData.id != 'marker'){
+          globalShortcut.register(prunedData.keys, MandR.setWindow(prunedData));
+        }          
+        else if (prunedData.id == 'marker'){
+          globalShortcut.register(prunedData.keys, function() {
+              if (markerModeFlag == 0){
+                markerModeFlag = 1;
+              }
+              else if (markerModeFlag == 1){
+                  markerModeFlag = 0;
+                }
+          });
+        }
+      }
     }
-  }
+
 
 
 

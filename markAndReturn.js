@@ -29,93 +29,91 @@ var MandR = {};
 
     //Do frontslash and backslash version
 
-    function TEXT(text){
-  return new Buffer(text, 'ucs2').toString('binary');
-}
+    if (process.platform === "win32"){
+
+    
 
 
-    var user32path = 'C:\\Windows\\System32\\user32.dll';
-
-    //var user32path = "/c/Windows/System32/user32.dll";
-
-         function TEXT(text){
-           return new Buffer(text, 'ucs2').toString('binary');
-        }
-
-        //was previously 'user32'
-        //next: try FindWindow
-          var user32 = new FFI.Library(user32path, {
-         'FindWindowW': ['int', ['string', 'string']],
-        'ShowWindow': ['int', ['int', 'int']],
-        'ShowWindowAsync': ['int', ['int', 'int']],
-        //'GetClassNameW': ['int'['int', 'string','int']]
-        'FindWindowExW': ['int', ['int', 'int', 'string', 'string']],
-        'BringWindowToTop': ['int', ['int']]
-
-        //'enumWindows': ['int', ['int', 'int']]   The issue is here!!!!!
-         });
-
-         //var handle = user32.FindWindowW(null, TEXT('Calculator'));
-        // var handle = user32.FindWindowExW(0, 0, null, TEXT('Calculator'));
-
-         var handle = user32.FindWindowW(null,TEXT("Calculator ‎- Calculator"));
-
-         //var handle = user32.FindWindowEx(FindWindowEx(0, 0, "Untitled - Notepad", 0));
-         //see what value handle is equal to
-         //handle value is equal to 0 sometimes, but not other times 
-/**
- * if HWND object matches the passed-in HWND
- * then show
- * if not
- * then hide
- * 
- * --OR--
- * 
- * Get the TEXT('Untitled - Notepad') of a window
- */
-user32.ShowWindowAsync(handle, 'SW_Hide');
-
-
-
-for ([id, keys, assocWindow] of prunedData){
-  if (keys == hotkey){
-    for(let i = 0; i <= assocWindow.length; i++){
-      user32.ShowWindowAsync(assocWindow[i], 'SW_RESTORE');
-      user32.BringWindowToTop(assocWindow[i]);
+        function TEXT(text){
+      return new Buffer(text, 'ucs2').toString('binary');
     }
-  }
-}
 
 
+        var user32path = 'C:\\Windows\\System32\\user32.dll';
 
-//var className = user32.GetClassName(handle);
+        //var user32path = "/c/Windows/System32/user32.dll";
 
-      //var openWindows = user32.enumWindows(windowFinder(handles));
-        // console.log("OpenWindows registered as:" + openWindows);
+            function TEXT(text){
+              return new Buffer(text, 'ucs2').toString('binary');
+            }
 
+            //was previously 'user32'
+            //next: try FindWindow
+              var user32 = new FFI.Library(user32path, {
+            'FindWindowW': ['int', ['string', 'string']],
+            'ShowWindow': ['int', ['int', 'int']],
+            'ShowWindowAsync': ['int', ['int', 'int']],
+            //'GetClassNameW': ['int'['int', 'string','int']]
+            'FindWindowExW': ['int', ['int', 'int', 'string', 'string']],
+            'BringWindowToTop': ['int', ['int']],
+            'GetActiveWindow': ['int', ['int']]
 
+            //'enumWindows': ['int', ['int', 'int']]   The issue is here!!!!!
+            });
 
+            //var handle = user32.FindWindowW(null, TEXT('Calculator'));
+            // var handle = user32.FindWindowExW(0, 0, null, TEXT('Calculator'));
 
-    /****
-     * The following is under construction
+            var handle = user32.FindWindowW(null,TEXT("Calculator ‎- Calculator"));
+
+            var activeHandle = user32.GetActiveWindow(null);
+
+            //var handle = user32.FindWindowEx(FindWindowEx(0, 0, "Untitled - Notepad", 0));
+            //see what value handle is equal to
+            //handle value is equal to 0 sometimes, but not other times 
+    /**
+     * if HWND object matches the passed-in HWND
+     * then show
+     * if not
+     * then hide
+     * 
+     * --OR--
+     * 
+     * Get the TEXT('Untitled - Notepad') of a window
      */
 
-      function windowFinder(handles){
-        {  //if the hotkey equals the one pressed HOW DO I GET THAT???
+    user32.ShowWindow(handle, 'SW_MINIMIZE');
 
+    //test
+    user32.ShowWindowAsync(activeHandle, 'SW_Hide');
+
+    var pruneLength = Object.keys(prunedData).length;
+
+      for (let i = 0; i < pruneLength-1; i++){
+        if (Object.entries(prunedData)[i][1] === hotkey){
+          for(let j = 1; j <= prunedData.assocWindows.length; j++){
+
+            let associatedWindow = Object.entries(prunedData)[i+1][j].toString();
+              let associatedWindowHandle = parseInt(associatedWindow);
+            user32.ShowWindowAsync(associatedWindowHandle, 'SW_Hide');
+            user32.BringWindowToTop(associatedWindowHandle[i+1][j]);
+          }
         }
-
-        return false;
       }
-         //for each open window in openWindows
+
+} 
+  else if(process.platform === "darwin"){
+    /**Mac Mark&Return */
+
+  }
+
+/**
+ * And the coup de grace- hide any windows not associated with the activator
+ */
 
 
-     var handle = user32.FindWindowW(null, TEXT('Untitled - Notepad')); //this code is what selects the window; right now it searches by the name of the window
+ }
 
-     console.log("Windows handle is:" + handle);
-     user32.ShowWindow(handle, 0);
-
-}
 
 /* End Activator */
 
@@ -157,7 +155,7 @@ MandR.setWindow = function setWindow(prunedData, args){
 
  //add listener to recognize keypress- actually already done with main's global shortcut.register
 
-  var activeWindow = user32.GetActiveWindow();
+  var activeWindow = user32.GetActiveWindow;
 
 
 
@@ -221,7 +219,7 @@ MandR.activateMarkMode = function(args){
    function TEXT(text){
     return new Buffer(text, 'ucs2').toString('binary');
  }
-
+}
  /*
    var user32 = new FFI.Library('user32', {
   'FindWindowW': ['int', ['string', 'string']],
@@ -249,4 +247,5 @@ MandR.activateMarkMode = function(args){
   }
 
 }
+*/
 module.exports = MandR;

@@ -36,6 +36,10 @@ marker.addMarker = function addMarker(){
             keybind.id = markerName;
             keybind.keys = mouseKey;
 
+            
+
+
+
       console.log("Keybind is: "+ keybind)
           ipcRenderer.send('markerAction', keybind);
           current.blur();
