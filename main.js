@@ -67,6 +67,7 @@ app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
+  globalShortcut.unregisterAll()
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
@@ -150,7 +151,17 @@ app.on('ready',function(){
   */
 let markerModeFlag = 0;
 
-//probably need to call a function here to instigate all this code
+
+
+ipc.on('markerAction', function(event, args){ //When user adds marker key
+
+
+
+});//probably need to call a function here to instigate all this code
+
+
+function AssignKey(){
+
   if (markerModeFlag == 0){
     for (var key in prunedData){ 
       if(prunedData.assocWindows != 'undefined'){  //CHANGE: undefined to null if keep logic
@@ -194,6 +205,8 @@ let markerModeFlag = 0;
       }
     }
 
+}
+ 
 
 
 

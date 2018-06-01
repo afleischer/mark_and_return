@@ -58,6 +58,8 @@ var MandR = {};
             'BringWindowToTop': ['int', ['int']],
             'GetActiveWindow': ['int', ['int']]
 
+            //Add setForegroundWindow ???
+
             //'enumWindows': ['int', ['int', 'int']]   The issue is here!!!!!
             });
 
@@ -85,7 +87,7 @@ var MandR = {};
     user32.ShowWindow(handle, 'SW_MINIMIZE');
 
     //test
-    user32.ShowWindowAsync(activeHandle, 'SW_Hide');
+    user32.ShowWindowAsync(activeHandle, 'SW_MINIMIZE');
 
     var pruneLength = Object.keys(prunedData).length;
 
@@ -104,6 +106,8 @@ var MandR = {};
 } 
   else if(process.platform === "darwin"){
     /**Mac Mark&Return */
+
+    //create a native .cpp file to 
 
   }
 
