@@ -4,12 +4,14 @@
   "description": "A handy utility for managing windows by task",
   "main": "main.js",
   "scripts": {
-  "rebuild": "electron-rebuild -f -w yourmodule"
-},
+    "test": "mocha",
+    "start": "electron ."
+  },
   "directories": {
     "test": "test"
   },
   "dependencies": {
+    "applescript": "^1.0.0",
     "ffi": "^2.2.0",
     "mousetrap": "^1.6.1",
     "ref": "^1.3.5"
@@ -22,10 +24,6 @@
     "electron-rebuild": "^1.7.3",
     "mocha": "^5.1.1"
   },
-  "scripts": {
-    "test": "mocha",
-    "start": "electron ."
-  },
   "repository": {
     "type": "git",
     "url": "\u0016"
@@ -37,5 +35,4 @@
   ],
   "author": "afleischer and the GitHub community",
   "license": "GPL-3.0"
-
 }

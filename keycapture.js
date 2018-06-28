@@ -24,6 +24,10 @@ class Keybind{
 
 }
 
+document.getElementById("start").addEventListener("click", ()=> {
+  ipcRenderer.send('startAction');
+
+});
 
 var input = document.getElementById("testInput");
 var input = document.querySelectorAll(".bindInput");

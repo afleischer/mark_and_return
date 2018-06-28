@@ -6,6 +6,13 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <meta charset="UTF-8">
     <title>Mark and Return Config v.0.1.0</title>
+
+    <!--script>
+      const {ipcRenderer} = require('electron');
+    function sendStart(){
+      ipcRenderer.send('startAction');
+    }
+    </script-->
   </head>
   <body>
     <h1>Mark and Return Config</h1>
@@ -26,6 +33,8 @@
       <button id = "removeBind">Remove keybind</button>
 
       <button id = "markerButton">MARK WINDOWS</button>
+
+      <button id = "start" onclick="sendStart()">START</button> 
 
       <button>Update</button>
     

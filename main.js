@@ -19,6 +19,9 @@ const Store = require('./preferencesManager.js')
 const getsetWindow = require('./getSet.js')
 const MandR = require('./markAndReturn.js')
 
+var FFI = require('ffi');
+var applescript = require('applescript');
+
 /**
  * 
  * TEST TEST TEST GITHUB WORKED
@@ -195,15 +198,15 @@ try{
       }
 
       for (var key in prunedData){ 
-        if(prunedData.assocWindows != 'undefined'){  //CHANGE: undefined to null if keep logic
+        if(prunedData.assocWindows != 'null'){  //CHANGE: undefined to null if keep logic
           var testy = (`prunedData.${key} = ${prunedData[key]}`);
           var testy2 = (prunedData.keys);    //MandR being a placeholder for the 
 
-          //"activator" hides and shows windows accordingly
+          //
           if (prunedData.id != 'marker'){
             try {
               
-              var shortcutWorked = 
+  //            var shortcutWorked = 
 
               globalShortcut.register(prunedData.keys, (prunedData, keysVar, limiter, globalLimiterVar) => {
               const electron = require('electron')
@@ -212,7 +215,7 @@ try{
               var count = limiter;
             
               var apptest = globalLimiterVar;
-            
+            /*
               if (apptest <= count){
                 app.GlobalLimiter++;
                 return;
@@ -228,10 +231,10 @@ try{
                     return;
                   }
             
-            
+            */ 
+
                 //add our window to the 
-                var FFI = require('ffi');
-                var applescript = require('applescript');
+
                // var getWindow = require('direct_window');
             
                 //let WindowsShow = require('window_retrieval_test');
@@ -489,7 +492,8 @@ try{
             
 
         }
-  });
+   });
+}
                    
           else if (prunedData.id == 'marker'){
             globalShortcut.register(prunedData.keys, function() {
@@ -507,7 +511,6 @@ try{
 //});
 
 
-
  
 /**
 * Handle marker entry
@@ -515,7 +518,9 @@ try{
  // ipc.on('markerAction', function(event, args){ //When user adds marker key
    
    //update hotkey in storage file
-    getSet.setterFunction(event, args); //Adds key to user-preferences file, removes dupes
+
+/*
+   getsetWindow.setterFunction(args); //Adds key to user-preferences file, removes dupes
 
     //need to receive updated hotkey string
 
@@ -534,11 +539,13 @@ try{
       }
     }
 
+  */
+
   //});
 
   ipc.on('invokeAction', function(event, args){ //When user adds Returner hotkey to field in render
     console.log("RECEIVED IPC IN MAIN!");
-    getSet.setterFunction(event, args); //Adds key to user-preferences file, removes dupes
+    getsetWindow.setterFunction(event, args); //Adds key to user-preferences file, removes dupes
   });
 
   ipc.on('markerStart', function(event, args){

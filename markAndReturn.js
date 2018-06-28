@@ -9,13 +9,28 @@ var MandR = {};
  * 
  * REMEMBER: assocWindow should be a HWND object
  */
- MandR.activator = function markAndReturn(objectIn, hotkeyValue){
+ MandR.activator = function markAndReturn(objectIn, hotkeyValue, limiter, globalLimiterVar){
+  const electron = require('electron')
+  const app = electron.app;
 
+  var count = limiter;
 
-    if (!markAndReturn.didrun){
-      markAndReturn.didrun = true;
-      return;
-    }
+  var apptest = globalLimiterVar;
+
+  if (apptest <= count){
+    app.GlobalLimiter++;
+    return;
+  }
+
+      //if this is the first x number of times fired, 
+
+    if (!markAndReturn.iterChecker){
+        markAndReturn.iterChecker = 0;
+        return;
+    }else if (markAndReturn.iterChecker <=limiter.length){
+        markAndReturn.iterChecker++;
+        return;
+      }
 
 
     //add our window to the 
@@ -169,64 +184,60 @@ MandR.setWindow = function setWindow(prunedData, args){
     if (process.platform === "win32"){
 
 
-    function TEXT(text){
-      return new Buffer(text, 'ucs2').toString('binary');
-  }
-
-
-    var user32 = new FFI.Library('user32', {
-    'FindWindowW': ['int', ['string', 'string']],
-  'ShowWindow': ['int', ['int', 'int']],
-  'GetActiveWindow': ['int', ['null']]
-    });
-
-  //ffi.Library(libraryFile, { functionSymbol: [ returnType, [ arg1Type, arg2Type, ... ], ... ]);
-
-  /**
-   * TODO: I Need to get the Text of a "set" window
-   */
-
-  //add listener to recognize keypress- actually already done with main's global shortcut.register
-
-    var activeWindow = user32.GetActiveWindow;
-
-
-
-  //var handle = user32.FindWindowW(null, TEXT('Untitled - Notepad')); //this code is what selects the window; right now it searches by the name of the window
-
-
-
-  var window = event;  //Will we set this here???  Might as well...
-
-
-    var keyCombo = args;
-
-    var rawData = fs.readFileSync(store.path);
-    var prunedDataHere = JSON.parse(rawData);
-    //can also try var prunedData = prunedData;
-
-    for (iter in prunedDataHere){
-      if (prunedDataHere.keys == keyCombo){
-        prunedDataHere.assocWindow.push = activeWindow;  //this might error out... we'll see. 
+        function TEXT(text){
+          return new Buffer(text, 'ucs2').toString('binary');
       }
-    }
-    /**
-     * if the above loop isn't working as expected, can try:
-     * 
-     * for (let [id, keys, assocWindow] of prunedData){
-     *    if ()
-     * }
-     */
 
-    var writer = JSON.stringify(prunedDataHere);
-    fs.writeFileSync(store.path, writer, 'utf8');
+
+        var user32 = new FFI.Library('user32', {
+        'FindWindowW': ['int', ['string', 'string']],
+      'ShowWindow': ['int', ['int', 'int']],
+      'GetActiveWindow': ['int', ['int']]
+        });
+
+      //ffi.Library(libraryFile, { functionSymbol: [ returnType, [ arg1Type, arg2Type, ... ], ... ]);
+
+      /**
+       * TODO: I Need to get the Text of a "set" window
+       */
+
+      //add listener to recognize keypress- actually already done with main's global shortcut.register
+
+        var activeWindow = user32.GetActiveWindow;
+
+      //var handle = user32.FindWindowW(null, TEXT('Untitled - Notepad')); //this code is what selects the window; right now it searches by the name of the window
+
+      //var window = event; 
+
+
+        var keyCombo = args;
+
+        var rawData = fs.readFileSync(store.path);
+        var prunedDataHere = JSON.parse(rawData);
+        //can also try var prunedData = prunedData;
+
+        for (iter in prunedDataHere){
+          if (prunedDataHere.keys == keyCombo){
+            prunedDataHere.assocWindow.push = activeWindow;  //this might error out... we'll see. 
+          }
+        }
+        /**
+         * if the above loop isn't working as expected, can try:
+         * 
+         * for (let [id, keys, assocWindow] of prunedData){
+         *    if ()
+         * }
+         */
+
+        var writer = JSON.stringify(prunedDataHere);
+        fs.writeFileSync(store.path, writer, 'utf8');
 
    }
    else if (process.platform === "darwin"){
 
       //remember: we have our variable hotkey with the hotkey info
 
-
+/*
        var script = ' 
       global frontApp, frontAppName, windowTitle
 
@@ -248,6 +259,8 @@ MandR.setWindow = function setWindow(prunedData, args){
 
       ';
 
+      */
+
       applescript.execString(script, function(err, rtn) {
           if (err) {
             // Something went wrong!
@@ -263,13 +276,14 @@ MandR.setWindow = function setWindow(prunedData, args){
             });
           }
       
-      }
+      });
       
 
    }
+}
   //other programs can reference this file to get the info
 
-}
+//}
 
 /**
  * The main event: this is where the windows are properly hidden and 
