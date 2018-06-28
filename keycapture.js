@@ -119,7 +119,7 @@ var removeBind = document.getElementById("removeBind").addEventListener("click",
       /***
        * Send gathered keybind to main process for handling 
        */
-          ipcRenderer.send('invokeAction', keybind);
+          ipcRenderer.send('hotkeyUpdate', keybind);
           current.blur();
           document.getElementsByName('hotkey_1')[0].placeholder=hotkey;
           current.value = "Key set at: " + mouseKey;
@@ -129,3 +129,5 @@ var removeBind = document.getElementById("removeBind").addEventListener("click",
 
       }  
     }
+
+module.exports = Keybind;

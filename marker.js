@@ -1,3 +1,6 @@
+
+
+const keybind = require ('./keycapture.js');
 //listener already added for focus
 
 var marker = {};
@@ -37,9 +40,6 @@ marker.addMarker = function addMarker(){
             keybind.keys = mouseKey;
 
             
-
-
-
       console.log("Keybind is: "+ keybind)
           ipcRenderer.send('markerAction', keybind);
           current.blur();

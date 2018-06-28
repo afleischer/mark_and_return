@@ -2,6 +2,7 @@ const electron = require('electron');
 const path = require('path');
 const fs = require('fs');
 
+const Store = require('./preferencesManager.js')
 var getSet = {};
 
 // getSet.js
@@ -27,7 +28,9 @@ getSet.setterFunction = function(event, args){
    //shouldn't be necessary if in main
   //const Store = require('./preferencesManager.js') 
 
-  const store = new Store;
+  const store = new Store({
+    configName : 'user-preferences'
+  });
   
   /* --OLD--
   ({ //create a new getting and setting logic
@@ -49,7 +52,6 @@ getSet.setterFunction = function(event, args){
    catch(e){
       fs.writeFileSync(store.path, "");
     }
-
    StoreArray.push(cleanedDataInitial); 
 
 
