@@ -150,7 +150,10 @@ let markerModeFlag = 0;
  */
 
 //Set a new marker hotkey
-ipc.on('markerAction', setMarker(event, args));//probably need to call a function here to instigate all this code
+  ipc.on('markerAction', (keybind) => {
+    setMarker(keybind);
+    register();
+  });//probably need to call a function here to instigate all this code
 
 //Record hotkey captured from view into model 
 ipc.on('hotkeyUpdate', setHotkey(event, args)); 
@@ -159,8 +162,8 @@ ipc.on('hotkeyUpdate', setHotkey(event, args));
 /**
  * Set global shortcuts to handle hotkey keypresses 
  */
-
-shortcutRegister;
+//logic to register global shortcuts received 
+register();
 
 
 //
