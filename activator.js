@@ -58,32 +58,62 @@
   * Get the TEXT('Untitled - Notepad') of a window
   */
 
- user32.ShowWindow(handle, 'SW_MINIMIZE');
+       user32.ShowWindow(handle, 'SW_MINIMIZE');
 
- //test
- user32.ShowWindowAsync(activeHandle, 'SW_MINIMIZE');
+       //test
+       user32.ShowWindowAsync(activeHandle, 'SW_MINIMIZE');
 
- var pruneLength = Object.keys(model).length;
+       var pruneLength = Object.keys(model).length;
 
-   for (let i = 0; i < pruneLength-1; i++){
-     if (Object.entries(model)[i][1] === hotkey){
-       for(let j = 1; j <= model.assocWindows.length; j++){
+         for (let i = 0; i < pruneLength-1; i++){
+           if (Object.entries(model)[i][1] === hotkey){
+             for(let j = 1; j <= model.assocWindows.length; j++){
 
-         let associatedWindow = Object.entries(model)[i+1][j].toString();
-           let associatedWindowHandle = parseInt(associatedWindow);
-         user32.ShowWindowAsync(associatedWindowHandle, 'SW_Hide');
-         user32.BringWindowToTop(associatedWindowHandle[i+1][j]);
-       }
-     }
+               let associatedWindow = Object.entries(model)[i+1][j].toString();
+                 let associatedWindowHandle = parseInt(associatedWindow);
+               user32.ShowWindowAsync(associatedWindowHandle, 'SW_Hide');
+               user32.BringWindowToTop(associatedWindowHandle[i+1][j]);
+             }
+           }
+         }
+
+      } 
+else if(process.platform === "darwin"){
+
+// TODO : 
+
+//REPLACE THIS WHEN DONE
+
+/*******
+Retrieve data and load into an appleScript-recognized list variable
+*******/
+
+  let braces = {};
+
+  let length = model.hotkeys.length;
+     console.log("length is"+length);
+  let ofInterest = model.hotkeys[length-1];
+    console.log("ofInterest is" +ofInterest);
+  let windows2ShowArray = ofInterest.assocWindows;
+
+//console.log("windows2ShowArray length is:"windows2ShowArray.length);
+
+  let converted = [];
+
+   for(let i = 0; i <= windows2ShowArray.length-1; i++){
+     converted[i] = `"${windows2ShowArray[i]}"`;
    }
 
-} 
-else if(process.platform === "darwin"){
- /**Mac Mark&Return 
-  * Uses npm-applescript, 
- */
 
- 
+  let appleScriptView = "{"+converted+"}";
+
+      let script = `
+
+      //for each application
+        tell each item in ${appleScriptView} 
+        activate 
+
+       `;
 
  //wither frontAppName or windowTitle will be our handle 
 
