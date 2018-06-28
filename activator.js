@@ -1,15 +1,22 @@
  var model, hotkey = require ('main');  //Object of JSON Hotkey data
+ const applescript = require ('applescript');
+
  var hotkey = hotkeyValue; //value at key that is pressed
 
 
- if (process.platform === "win32"){
+/********************
+Logic by platform to show (activate) the windows that 
+have been bound per hotkey. 
+********************/
+const activator = (keybind) => {
 
- 
+
+  if (process.platform === "win32"){
 
 
      function TEXT(text){
    return new Buffer(text, 'ucs2').toString('binary');
- }
+    }
 
 
      var user32path = 'C:\\Windows\\System32\\user32.dll';
@@ -78,7 +85,8 @@
          }
 
       } 
-else if(process.platform === "darwin"){
+
+  else if(process.platform === "darwin"){
 
 // TODO : 
 
@@ -88,55 +96,52 @@ else if(process.platform === "darwin"){
 Retrieve data and load into an appleScript-recognized list variable
 *******/
 
-  let braces = {};
 
-  let length = model.hotkeys.length;
-     console.log("length is"+length);
-  let ofInterest = model.hotkeys[length-1];
-    console.log("ofInterest is" +ofInterest);
-  let windows2ShowArray = ofInterest.assocWindows;
+    let length = model.hotkeys.length;
+       console.log("length is"+length);
+    let ofInterest = model.hotkeys[length-1];
+      console.log("ofInterest is" +ofInterest);
+    let windows2ShowArray = ofInterest.assocWindows;
 
-//console.log("windows2ShowArray length is:"windows2ShowArray.length);
+  //console.log("windows2ShowArray length is:"windows2ShowArray.length);
 
-  let converted = [];
+    let converted = [];
 
-   for(let i = 0; i <= windows2ShowArray.length-1; i++){
-     converted[i] = `"${windows2ShowArray[i]}"`;
-   }
-
-
-  let appleScriptView = "{"+converted+"}";
-
-      let script = `
-
-      //for each application
-        tell each item in ${appleScriptView} 
-        activate 
-
-       `;
-
- //wither frontAppName or windowTitle will be our handle 
-
- applescript.execString(script,function(err, rtn) {
-   if (err) {
-     // Something went wrong!
-   }
-   if (Array.isArray(rtn)) {
-     rtn.forEach(function(songName) {
-       console.log(songName);
-     });
-   }
- });  //buffers output into a callback function 
- //create a native .cpp file to 
+     for(let i = 0; i <= windows2ShowArray.length-1; i++){
+       converted[i] = `"${windows2ShowArray[i]}"`;
+     }
 
 
-}
+        let appleScriptView = "{"+converted+"}";
+
+            let script = `
+
+            set windowShow to ${appleScriptView}  
+              repeat with theItem in windowShow
+                activate theItem
+              end repeat
+             `;
+
+   //wither frontAppName or windowTitle will be our handle 
+
+              applescript.execString(script,function(err, rtn) {
+               if (err) {
+                 // Something went wrong!
+                 console.log("Error with applescript Exexution");
+               }
+              });  //buffers output into a callback function 
+              //create a native .cpp file to 
+
+
+  } 
 
 /**
 * And the coup de grace- hide any windows not associated with the activator
 */
 
 
-});
+}
+
+export default activator;
 
 /* End Activator */ 

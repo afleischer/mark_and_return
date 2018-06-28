@@ -102,7 +102,7 @@ app.on('ready',function(){
  */
 
    //FILE STORAGE DATA VARIABLE
-   let model = () =>{ 
+   const model = () => { 
 
       var store = new Store({
         configName: 'user-preferences',
@@ -119,14 +119,20 @@ app.on('ready',function(){
 
     //Translate flat file data to JSON
       try{
-        let model = JSON.parse(rawData);
+        let cleanedData = JSON.parse(rawData);
       }
         catch(error){
           console.log(error)
       }
-        return model;
+
+      return cleanedData;
   } 
 
+  const fileWrite = (args) => {
+        let writeData = args;
+        JSON.stringify(writeData);
+        fs.writeFileSync(store.path, writeData, 'utf8', );
+      }
 
 var hotkeys = [];
 var eachWindow = [];
