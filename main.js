@@ -158,8 +158,21 @@ let markerModeFlag = 0;
 //Set a new marker hotkey
   ipc.on('markerAction', (keybind) => {
     setMarker(keybind);
-    register();
-  });//probably need to call a function here to instigate all this code
+
+    /****
+    Update the app to bind the keys in the file to the newly-updated model 
+    !!! Model may not be updated !!!
+    ****/
+
+    //after confirmed working, try a for of loop for practice
+    for (i = 0; i <= model.hotkeys.length-1; i++){
+      if(model.hotkeys[i].id == "marker"){
+        globalShortcut.register(model.hotkeys[i].key, (model, keysVar, limiter, globalLimiterVar) => {activator}; 
+      }
+    }
+    
+
+  });
 
 //Record hotkey captured from view into model 
 ipc.on('hotkeyUpdate', setHotkey(event, args)); 
@@ -169,7 +182,7 @@ ipc.on('hotkeyUpdate', setHotkey(event, args));
  * Set global shortcuts to handle hotkey keypresses 
  */
 //logic to register global shortcuts received 
-register();
+
 
 
 //
@@ -224,8 +237,6 @@ var keysVar = model.keys;
                * 
                */
               globalShortcut.register(model.keys, (model, keysVar, limiter, globalLimiterVar) => {activator}
-
-                activator;
 
 
                
